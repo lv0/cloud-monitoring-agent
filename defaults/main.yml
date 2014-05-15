@@ -1,20 +1,22 @@
 ---
 # defaults file for cloud-monitoring-agent
-cloud_monitoring_default_checks:
-  - filesystem
-  - memory
-  - cpu
-  - load
-cloud_monitoring_additional_checks: []
-
-cloud_monitoring_filesystem_alarm: False
-cloud_monitoring_memory_alarm: False
-cloud_monitoring_cpu_alarm: False
-cloud_monitoring_load_alarm: False
-cloud_monitoring_network_alarm: False
-cloud_monitoring_disk_alarm: False
-
 cloud_monitoring_network_receive_critical: 76
 cloud_monitoring_network_receive_warning: 56
 cloud_monitoring_network_transmit_critical: 76
 cloud_monitoring_network_transmit_warning: 56
+
+cloud_monitoring_agent:
+  checks:
+    - type: "agent.filesystem"
+      label: "Filesystem usage"
+      disabled: "false"
+      alarm: False
+      alarm_id: "disk-usage"
+      alarm_label: "usage on "
+      alarm_crit: 90
+      alarm_crit_label: "Disk usage is above 90%, #{used} out of #{total}"
+      alarm_warn: 80
+      alarm_warn_label: "Disk usage is above 80%, #{used} out of #{total}"
+      period: 30
+      timeout: 60
+      target: "/"

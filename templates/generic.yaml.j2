@@ -1,0 +1,22 @@
+type: {{ cloud_monitoring_agent.checks.type }}
+label: {{ cloud_monitoring_agent.checks.label }}
+disabled: {{ cloud_monitoring_agent.checks.disabled }}
+period: {{ cloud_monitoring_agent.checks.period }}
+timeout: {{ cloud_monitoring_agent.checks.timeout }}
+{% if cloud_monitoring_agent.checks.target is defined %}
+details:
+  target: {{ cloud_monitoring_agent.checks.target }}
+{% endif %}
+{% if cloud_monitoring_filesystem_alarm == True %}
+alarms:
+    alarm-{{ cloud_monitoring_agent.checks.alarm_id }}:
+        label: {{ cloud_monitoring_agent.checks.alarm_label }}
+        notification_plan_id: npTechnicalContactsEmail
+        criteria: |
+            if (percentage(metric['used'], metric['total']) > {{ cloud_monitoring_agent.check.alarm_crit }}) {
+                return new AlarmStatus(CRITICAL, '{{ cloud_monitoring_agent.check.alarm_crit_label }}');
+            }
+            if (percentage(metric['used'], metric['total']) > {{ cloud_monitoring_agent.check.alarm_warn }}) {
+                return new AlarmStatus(WARNING, '{{ cloud_monitoring_agent.check.alarm_warn_label }}');
+            }
+{% endif %}

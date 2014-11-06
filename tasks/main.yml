@@ -9,12 +9,15 @@
 - include: unsupported_os.yml
   when: base_supported_os is not defined
 
+- name: Ensuring idempotency - stop rackspace agent if running
+  service: name=rackspace-monitoring-agent state=stopped enabled=no
+
 - name: setup the monitoring agent
   command: rackspace-monitoring-agent --setup --username {{ rackspace_username }} --apikey {{ rackspace_apikey }} creates=/etc/rackspace-monitoring-agent.cfg
   when: not cloud_monitoring_agent_force_setup
 
 - name: force setup of the monitoring agent
-  command: rackspace-monitoring-agent --setup --username {{ rackspace_username }} --apikey {{ rackspace_apikey }}
+  command: rackspace-monitoring-agent --setup --username {{ rackspace_username }} --apikey {{ rackspace_apikey }} --restart-sysv-on-upgrade
   when: cloud_monitoring_agent_force_setup
 
 - name: ensure agent is started
@@ -22,6 +25,12 @@
 
 - name: ensure the conf.d directory exists
   file: path=/etc/rackspace-monitoring-agent.conf.d state=directory owner=root group=root mode=0755
+
+- name: ensure the rackspace custom plugins path exists
+  file: path=/usr/lib/rackspace-monitoring-agent state=directory owner=root group=root mode=0755
+
+- name: Copy NTP offset plugin to host
+  copy: src=plugins/ntp_offset.sh dest=/usr/lib/rackspace-monitoring-agent/ntp_offset.sh
 
 - name: configure checks and alarms
   template: src={{ item }}.yaml.j2 dest=/etc/rackspace-monitoring-agent.conf.d/{{ item }}.yaml owner=root group=root mode=0644

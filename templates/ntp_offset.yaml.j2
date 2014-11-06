@@ -1,0 +1,18 @@
+type: agent.plugin
+label: NTP
+disabled: false
+period: {{ cloud_monitoring_ntp_period| default(60) }}
+timeout: {{ cloud_monitoring_ntp_timeout | default(30) }}
+details:
+  file: ntp_offset.sh
+{% if cloud_monitoring_ntp_alarm == True %}
+alarms:
+    alarm-ntp:
+        label: NTP Offset
+        notification_plan_id: {{ notificationPlanId_Crit }}
+        criteria: |
+            if (metric['ntp_offset'] > 10000) {
+              return new AlarmStatus(CRITICAL, 'ntp offset is NOTOK');
+            }
+            return new AlarmStatus(OK, 'ntp offset is OK');
+{% endif %}

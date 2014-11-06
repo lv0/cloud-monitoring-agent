@@ -7,7 +7,7 @@ timeout: {{ cloud_monitoring_cpu_timeout | default(30) }}
 alarms:
     alarm-cpu:
         label: CPU Usage
-        notification_plan_id: npTechnicalContactsEmail
+        notification_plan_id: {{ notificationPlanId_Crit }}
         criteria: |
             if (metric['usage_average'] > 95) {
               return new AlarmStatus(CRITICAL, 'CPU usage is #{usage_average}%, above your critical threshold of 95%');

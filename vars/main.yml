@@ -1,2 +1,12 @@
 ---
 # vars file for cloud-monitoring-agent
+notificationPlanId_Crit: np8gYY9Ni6
+notificationPlanId_Normal: npTechnicalContactsEmail
+
+cloud_monitoring_memory_alarm: true
+cloud_monitoring_disk_alarm: true
+cloud_monitoring_cpu_alarm: true
+cloud_monitoring_filesystem_alarm: true
+cloud_monitoring_ntp_alarm: true
+
+cloud_monitoring_additional_checks: ['ntp_offset']

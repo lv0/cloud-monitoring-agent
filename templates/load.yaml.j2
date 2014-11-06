@@ -7,7 +7,7 @@ timeout: {{ cloud_monitoring_load_timeout | default(30) }}
 alarms:
     alarm-load-average:
         label: High Load Average
-        notification_plan_id: npTechnicalContactsEmail
+        notification_plan_id: {{ notificationPlanId_Crit }}
         criteria: |
             if (metric['5m'] > 3) {
               return new AlarmStatus(CRITICAL, '5 minute load average is #{5m}, above your critical threshold of 3');

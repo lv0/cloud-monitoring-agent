@@ -15,4 +15,4 @@
   when: ansible_distribution == "Debian"
 
 - name: Debian | install monitoring agent
-  apt: name=rackspace-monitoring-agent state=present update_cache=yes cache_valid_time=86400
+  apt: name=rackspace-monitoring-agent state=present update_cache=yes cache_valid_time=0

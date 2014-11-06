@@ -9,7 +9,7 @@ details:
 alarms:
     alarm-disk-size:
         label: usage on {{ cloud_monitoring_filesystem_target | default("/") }}
-        notification_plan_id: npTechnicalContactsEmail
+        notification_plan_id: {{ notificationPlanId_Crit }}
         criteria: |
             if (percentage(metric['used'], metric['total']) > 90) {
                 return new AlarmStatus(CRITICAL, 'Disk usage is above 90%, #{used} out of #{total}');
